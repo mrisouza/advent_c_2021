@@ -13,7 +13,7 @@ void init(fcontent* f, FILE* pfile){
     while((c = getc(pfile)) != EOF){
         stor_size++;
     }
-    char* content = (char *) malloc(stor_size * sizeof(char));
+    char* content = (char *) malloc((stor_size+1) * sizeof(char));
     rewind(pfile);
     while((c = getc(pfile)) != EOF && !first_line){
         num_bits++;
@@ -22,65 +22,65 @@ void init(fcontent* f, FILE* pfile){
             num_bits--;
         }
     }
-
-    int* frequency_1 = (int *) malloc(num_bits * sizeof(int));
-    int* frequency_0 = (int *) malloc(num_bits * sizeof(int));
-    
-    for(int i = 0; i<num_bits; i++){
-        frequency_0[i] = 0;
-        frequency_1[i] = 0;
-    }
-    
     rewind(pfile);
-    
-    int j = 0;
     int i = 0;
     while((c = getc(pfile)) != EOF){
         content[i] = c;
-        int pos = j % num_bits;
-        /* set frequency vector */
-        if(c != '\n'){
-            for(int k = 0; k<num_bits; k++){
-                if(pos == k){
-                    if(c == '0'){
-                        frequency_0[pos] += 1;
-                        j++;
-                    }
-                    if(c == '1'){
-                        frequency_1[pos] += 1;
-                        j++;
-                    }
+        i++;
+    }
+    f->num_bits = num_bits;
+    f->content = content;
+}
+
+char bit_in_position(fcontent* f, int pos, bool is_oxygen){
+    if(pos >= f->num_bits){
+        printf("incorrect position...\n");
+        exit(EXIT_FAILURE);
+    }
+    int i = 0;
+    f->frequency_0 = 0;
+    f->frequency_1 = 0;
+
+    while(f->content[i] != '\0'){
+        int rem = i % (f->num_bits + 1); // count the last char of line
+        if(f->content[i] != '\n'){
+            if(rem == pos){
+                if(f->content[i] == '0'){
+                    f->frequency_0 += 1;
+                }
+                if(f->content[i] == '1'){
+                    f->frequency_1 += 1;
                 }
             }
         }
         i++;
     }
-    f->num_bits = num_bits;
-    f->content = content;
-    f->frequency_0 = frequency_0;
-    f->frequency_1 = frequency_1;
-}
-
-void get_gamma_and_epsilon(fcontent* f){
-    int gamma = 0;
-    int epsilon = 0;
-    for(int i = 0; i<f->num_bits; i++){
-        if(f->frequency_0[i] > f->frequency_1[i]){
-            gamma = 2*gamma + 0;
-            epsilon = 2*epsilon + 1;
+    if(is_oxygen){
+        if(f->frequency_1 >= f->frequency_0){
+            return '1';
+        } else {
+            return '0';
         }
-        if(f->frequency_0[i] <= f->frequency_1[i]){
-            gamma = 2*gamma + 1;
-            epsilon = 2*epsilon + 0;
+    } else {
+        if(f->frequency_1 >= f->frequency_0){
+            return '0';
+        } else {
+            return '1';
         }
     }
-    printf("%d\n", gamma * epsilon);
 }
 
-void read_content(fcontent* f){
-    printf("Num of bits: %d\n", f->num_bits);
-    for(int i = 0; i<f->num_bits; i++){
-        printf("(%d, %d)\n", f->frequency_0[i], f->frequency_1[i]);
+void remove_bit_lines(fcontent* f, int pos, char bit){
+    int i = 0;
+    while(f->content[i] != '\0'){
+        int rem = i % (f->num_bits+1);
+        if(f->content[i] != '\n'){
+            if(rem == pos){
+                if(f->content[i] == bit){
+                    
+                }
+            }
+        }
     }
 }
 

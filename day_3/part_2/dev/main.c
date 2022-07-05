@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "interface.h"
 
@@ -11,12 +12,12 @@ int main(int argc, char* argv[]){
         exit(EXIT_FAILURE);
     }
     const char* fname = argv[1];
+    bool is_oxygen = true;
     fcontent f;
 
     FILE* pfile = open_file(fname);
     init(&f, pfile);
-    read_content(&f);
-    get_gamma_and_epsilon(&f);
+    char b = bit_in_position(&f, 1, is_oxygen);
     close_file(pfile);
     return EXIT_SUCCESS;
 }

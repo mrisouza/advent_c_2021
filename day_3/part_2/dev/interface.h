@@ -1,13 +1,12 @@
 typedef struct S_fcontent{
     char* content;
-    int* frequency_1;
-    int* frequency_0;
+    int frequency_1;
+    int frequency_0;
     int num_bits;
 } fcontent;
 
 void init(fcontent* f, FILE* pfile);
-void get_gamma_and_epsilon(fcontent* f);
-void read_content(fcontent* f);
+char bit_in_position(fcontent* f, int pos, bool is_oxygen);
 
 /* File handling */
 FILE* open_file(const char* fname);
