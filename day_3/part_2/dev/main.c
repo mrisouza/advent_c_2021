@@ -12,12 +12,11 @@ int main(int argc, char* argv[]){
         exit(EXIT_FAILURE);
     }
     const char* fname = argv[1];
-    bool is_oxygen = true;
     fcontent f;
 
     FILE* pfile = open_file(fname);
     init(&f, pfile);
-    char b = bit_in_position(&f, 1, is_oxygen);
+    remove_lines(&f, 0, true);
     close_file(pfile);
     return EXIT_SUCCESS;
 }

@@ -7,6 +7,8 @@ typedef struct S_fcontent{
 
 void init(fcontent* f, FILE* pfile);
 char bit_in_position(fcontent* f, int pos, bool is_oxygen);
+void update_content(fcontent* f, int pos, char bit);
+void remove_lines(fcontent* f, int pos, bool is_oxygen);
 
 /* File handling */
 FILE* open_file(const char* fname);

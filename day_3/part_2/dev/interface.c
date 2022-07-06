@@ -28,6 +28,7 @@ void init(fcontent* f, FILE* pfile){
         content[i] = c;
         i++;
     }
+    
     f->num_bits = num_bits;
     f->content = content;
 }
@@ -70,17 +71,35 @@ char bit_in_position(fcontent* f, int pos, bool is_oxygen){
     }
 }
 
-void remove_bit_lines(fcontent* f, int pos, char bit){
+void update_content(fcontent* f, int pos, char bit){
+    int total_char = 0;
     int i = 0;
+    int consider_lines = 0;
     while(f->content[i] != '\0'){
-        int rem = i % (f->num_bits+1);
-        if(f->content[i] != '\n'){
-            if(rem == pos){
-                if(f->content[i] == bit){
-                    
-                }
-            }
+        total_char++;
+        i++;
+    }
+    for(i = pos; i<total_char; i += f->num_bits+1){
+        if(f->content[i] != bit){
+            consider_lines++;
         }
+    }
+    int total_updated_char = consider_lines * (f->num_bits + 1);
+    char* updated_content = (char *) malloc(total_updated_char * sizeof(char));
+    
+    for(i = 0; i < total_updated_char; i++){
+        
+    }
+}
+
+void remove_lines(fcontent* f, int pos, bool is_oxygen){
+    char bit_in_pos = bit_in_position(f, pos, is_oxygen);
+    printf("bit in pos: %c\n", bit_in_pos);
+    if(bit_in_pos == '1'){
+        update_content(f, pos, '0');
+    }
+    if(bit_in_pos == '0'){
+        update_content(f, pos, '1');
     }
 }
 
