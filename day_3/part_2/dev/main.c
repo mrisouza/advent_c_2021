@@ -16,7 +16,7 @@ int main(int argc, char* argv[]){
 
     FILE* pfile = open_file(fname);
     init(&f, pfile);
-    remove_lines(&f, 0, true);
+    get_o_2(&f);
     close_file(pfile);
     return EXIT_SUCCESS;
 }
