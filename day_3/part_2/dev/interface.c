@@ -10,9 +10,14 @@ void init(fcontent* f, FILE* pfile){
     int stor_size = 0;
     bool first_line = false;
     int num_bits = 0;
+    int total_lines = 0;
     while((c = getc(pfile)) != EOF){
+        if(c == '\n'){
+            total_lines++;
+        }
         stor_size++;
     }
+    total_lines++;
     char* content = (char *) malloc((stor_size+1) * sizeof(char));
     rewind(pfile);
     while((c = getc(pfile)) != EOF && !first_line){
@@ -31,6 +36,8 @@ void init(fcontent* f, FILE* pfile){
     
     f->num_bits = num_bits;
     f->content = content;
+    f->total_lines = total_lines;
+    // printf("Total lines: %d\n", f->total_lines);
 }
 
 char bit_in_position(fcontent* f, int pos, bool is_oxygen){
@@ -110,19 +117,21 @@ void update_content(fcontent* f, int pos, char bit){
             i++;
         }
     }
-    free(f->content);
+
     f->content = updated_content;
-    
+    f->total_lines = consider_lines;
+    /*
     for(i = 0; i<total_updated_char; i++){
         printf("%c", f->content[i]);
     }
-    printf("\n\n");
-    
+    printf("\n");
+    */
+   //printf("Total lines: %d\n", consider_lines);
 }
 
 void remove_lines(fcontent* f, int pos, bool is_oxygen){
     char bit_in_pos = bit_in_position(f, pos, is_oxygen);
-    printf("Most frequent bit in pos %d: %c\n", pos, bit_in_pos);
+    //printf("Most frequent bit in pos %d: %c\n", pos, bit_in_pos);
     if(bit_in_pos == '1'){
         update_content(f, pos, '0');
     }
@@ -131,10 +140,14 @@ void remove_lines(fcontent* f, int pos, bool is_oxygen){
     }
 }
 
-void get_o_2(fcontent* f){
+int get_o_2(fcontent* f){
     int o_2 = 0;
     for(int i = 0; i<f->num_bits; i++){
-        remove_lines(f, i, true);
+        if(f->total_lines != 1){
+            remove_lines(f, i, true);
+        } else {
+            continue;
+        }
     }
 
     for(int i = 0; i<f->num_bits; i++){
@@ -145,13 +158,17 @@ void get_o_2(fcontent* f){
             o_2 = 2*o_2 + 0;
         }
     }
-    printf("The result is: %d\n", o_2);
+    return o_2;
 }
 
-void get_c_o_2(fcontent* f){
+int get_c_o_2(fcontent* f){
     int c_o_2 = 0;
     for(int i = 0; i<f->num_bits; i++){
-        remove_lines(f, i, false);
+        if(f->total_lines != 1){
+            remove_lines(f, i, false);
+        } else {
+            continue;
+        }
     }
 
     for(int i = 0; i<f->num_bits; i++){
@@ -162,7 +179,7 @@ void get_c_o_2(fcontent* f){
             c_o_2 = 2*c_o_2 + 0;
         }
     }
-    printf("The result is: %d\n", c_o_2);
+    return c_o_2;
 }
 
 /* File handling */
