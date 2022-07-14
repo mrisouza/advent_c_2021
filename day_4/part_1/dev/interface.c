@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
+
+#include "interface.h"
 
 FILE* open_file(const char* fname){
     FILE* pfile = fopen(fname, "r");
@@ -51,6 +54,7 @@ void file_handling(FILE* pfile){
             pch = strtok(line, ",");
             while(pch != NULL){
                 random_num[i] = atoi(pch);
+                printf("%d, ", random_num[i]);
                 i++;
                 pch = strtok(NULL, ",");
             }
