@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "file_handling.h"
+#include "interface.h"
 
 int main(int argc, char* argv[]){
     if(argc != 2){
