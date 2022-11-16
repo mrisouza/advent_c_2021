@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+
+#include "interface.h"
 
 #define MAX 1000
 
@@ -18,12 +21,11 @@ int main(int argc, char** argv){
         perror("could not open file...\n");
         exit(EXIT_FAILURE);
     }
-    int drawn_num[MAX];
-    int i = 0;
-    while(fscanf(pfnums, "%d,", &drawn_num[i]) != EOF){
-        printf("%d\n", drawn_num[i]);
-        i++;
-    }
+    ll_int drawn_num[MAX];
+    board boards[MAX];
+
+    get_drawn_numbers(pfnums, drawn_num);
+    init_boards(pfboards, boards);
 
     fclose(pfnums);
     fclose(pfboards);

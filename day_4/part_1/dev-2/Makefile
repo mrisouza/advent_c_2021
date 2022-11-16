@@ -1,7 +1,7 @@
 CC := gcc
 CFLAGS := -O0 -g -std=c11 -Wall -Wextra -Wshadow -pedantic
 LDFLAGS :=
-OBJFILES := main.o
+OBJFILES := interface.o main.o
 TARGET := day_4_part_1
 
 all: $(TARGET)
