@@ -1,7 +1,7 @@
 *.out
-*.in
 advent_*
 *day_*part_*
 *.log
 *.json
 *.o
+main

@@ -1,13 +1,15 @@
+.PHONY: clean
+
 CC := gcc
-CFLAGS := -O0 -g -std=c99 -Wall -Wextra -Wshadow -pedantic
-LDFLAGS :=
-OBJFILES := interface.o main.o
-TARGET := day_5_part_2
+CFLAGS := -O0 -g -std=c11 -Wall -Wextra -Wshadow -pedantic
+LDFLAGS := 
+OBJFILES := main.o interface.o
+TARGET := main
 
 all: $(TARGET)
 
-$(TARGET) : $(OBJFILES)
+$(TARGET): $(OBJFILES)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJFILES) $(LDFLAGS)
 
 clean:
-	rm -rf $(OBJFILES) $(TARGET) *~
+	rm -rf $(TARGET) $(OBJFILES) ~*
