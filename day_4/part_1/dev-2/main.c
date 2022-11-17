@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "interface.h"
+#define MAX 5
 
-#define MAX 1000
+#include "interface.h"
 
 int main(int argc, char** argv){
     if(argc != 3){
@@ -21,11 +21,12 @@ int main(int argc, char** argv){
         perror("could not open file...\n");
         exit(EXIT_FAILURE);
     }
-    ll_int drawn_num[MAX];
-    board boards[MAX];
+    ll_int drawn_num[27];
+    board boards[3];
 
     get_drawn_numbers(pfnums, drawn_num);
     init_boards(pfboards, boards);
+    init_game(boards);
 
     fclose(pfnums);
     fclose(pfboards);
