@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define MAX 5
-
 #include "interface.h"
 
 int main(int argc, char** argv){
@@ -21,12 +19,16 @@ int main(int argc, char** argv){
         perror("could not open file...\n");
         exit(EXIT_FAILURE);
     }
-    ll_int drawn_num[27];
-    board boards[3];
+    ll_int drawn_num[DRAWN_NUMBERS];
+    board boards[NUM_BOARDS];
 
     get_drawn_numbers(pfnums, drawn_num);
     init_boards(pfboards, boards);
     init_game(boards);
+    printf("%lld", boards[0].rows[0][1]);
+    //print_boards(boards);
+    //play_game(boards, drawn_num);
+    //print_boards(boards);
 
     fclose(pfnums);
     fclose(pfboards);

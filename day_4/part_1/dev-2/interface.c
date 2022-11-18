@@ -14,12 +14,12 @@ void get_drawn_numbers(FILE* pfnums, ll_int drawn_num[]){
 void init_boards(FILE* pfboards, board boards[]){
     int i = 0, j = 0, k = 0;
     while(fscanf(pfboards, "%lld ", &boards[i].rows[j][k]) != EOF){
-        if(j == MAX - 1 && k == MAX - 1){
+        if(j == NUM_BOARDS - 1 && k == NUM_BOARDS - 1){
             i++;
             j = 0;
             k = 0;
         } else {
-            if(k == MAX - 1){
+            if(k == NUM_BOARDS - 1){
                 j++;
                 k = 0;
             } else {
@@ -32,12 +32,12 @@ void init_boards(FILE* pfboards, board boards[]){
     i = 0, j = 0, k = 0;
 
     while(fscanf(pfboards, "%lld ", &boards[i].rows[j][k]) != EOF){
-        if(j == MAX - 1 && k == MAX - 1){
+        if(j == NUM_BOARDS - 1 && k == NUM_BOARDS - 1){
             i++;
             j = 0;
             k = 0;
         } else {
-            if(k == MAX - 1){
+            if(k == NUM_BOARDS - 1){
                 j++;
                 k = 0;
             } else {
@@ -48,7 +48,39 @@ void init_boards(FILE* pfboards, board boards[]){
 }
 
 void init_game(board boards[]){
-    for(int i = 0; i < MAX; i++){
+    for(int i = 0; i < NUM_BOARDS; i++){
         boards[i].winner = false;
+    }
+}
+
+void play_game(board boards[], ll_int drawn_num[]){
+    //bool have_winner = false;
+    int i = 0;
+
+    while(i < DRAWN_NUMBERS){
+        ll_int num = drawn_num[i];
+        for(int l = 0; l < NUM_BOARDS; l++){
+            for(int j = 0; j < SIZE_BOARDS; j++){
+                for(int k = 0; k < SIZE_BOARDS; k++){
+                    if(boards[l].rows[j][k] == num){
+                        /* replace by -1 */
+                        boards[l].rows[j][k] = -1;
+                    }
+                }
+            }
+        }
+        i++;
+    }
+}
+
+void print_boards(board boards[]){
+    for(int i = 0; i < NUM_BOARDS; i++){
+        printf("Board %d:\n", i);
+        for(int j = 0; j < SIZE_BOARDS; j++){
+            for(int k = 0; k < SIZE_BOARDS; k++){
+                printf("%lld ", boards[i].rows[j][k]);
+            }
+            printf("\n");
+        }
     }
 }
