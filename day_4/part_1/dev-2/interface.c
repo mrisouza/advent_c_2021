@@ -14,12 +14,12 @@ void get_drawn_numbers(FILE* pfnums, ll_int drawn_num[]){
 void init_boards(FILE* pfboards, board boards[]){
     int i = 0, j = 0, k = 0;
     while(fscanf(pfboards, "%lld ", &boards[i].rows[j][k]) != EOF){
-        if(j == NUM_BOARDS - 1 && k == NUM_BOARDS - 1){
+        if(j == SIZE_BOARDS - 1 && k == SIZE_BOARDS - 1){
             i++;
             j = 0;
             k = 0;
         } else {
-            if(k == NUM_BOARDS - 1){
+            if(k == SIZE_BOARDS - 1){
                 j++;
                 k = 0;
             } else {
@@ -27,17 +27,17 @@ void init_boards(FILE* pfboards, board boards[]){
             }
         }
     }
-    
+
     rewind(pfboards);
     i = 0, j = 0, k = 0;
 
     while(fscanf(pfboards, "%lld ", &boards[i].rows[j][k]) != EOF){
-        if(j == NUM_BOARDS - 1 && k == NUM_BOARDS - 1){
+        if(j == SIZE_BOARDS - 1 && k == SIZE_BOARDS - 1){
             i++;
             j = 0;
             k = 0;
         } else {
-            if(k == NUM_BOARDS - 1){
+            if(k == SIZE_BOARDS - 1){
                 j++;
                 k = 0;
             } else {
@@ -60,6 +60,7 @@ void play_game(board boards[], ll_int drawn_num[]){
     while(i < DRAWN_NUMBERS){
         ll_int num = drawn_num[i];
         for(int l = 0; l < NUM_BOARDS; l++){
+            printf("Checking board number: %d\n", l);
             for(int j = 0; j < SIZE_BOARDS; j++){
                 for(int k = 0; k < SIZE_BOARDS; k++){
                     if(boards[l].rows[j][k] == num){
@@ -82,5 +83,11 @@ void print_boards(board boards[]){
             }
             printf("\n");
         }
+    }
+}
+
+void print_drawn_numbers(ll_int drawn_numbers[]){
+    for(ll_int i = 0; i < DRAWN_NUMBERS; i++){
+        printf("%lld\n", drawn_numbers[i]);
     }
 }

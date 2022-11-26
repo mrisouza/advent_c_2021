@@ -17,3 +17,4 @@ void init_boards(FILE* pfboards, board boards[]);
 void init_game(board boards[]);
 void play_game(board boards[], ll_int drawn_num[]);
 void print_boards(board boards[]);
+void print_drawn_numbers(ll_int drawn_numbers[]);
