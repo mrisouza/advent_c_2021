@@ -24,12 +24,9 @@ int main(int argc, char** argv){
     board boards[NUM_BOARDS];
 
     get_drawn_numbers(pfnums, drawn_num);
-    //print_drawn_numbers(drawn_num);
     init_boards(pfboards, boards);
     init_game(boards);
-    //print_boards(boards);
     play_game(boards, drawn_num);
-    print_boards(boards);
 
     fclose(pfnums);
     fclose(pfboards);
