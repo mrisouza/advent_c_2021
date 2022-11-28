@@ -9,7 +9,6 @@ void get_drawn_numbers(FILE* pfnums, ll_int drawn_num[]){
     while(fscanf(pfnums, "%lld,", &drawn_num[i]) != EOF){
         i++;
     }
-    printf("%d", i);
 }
 
 void init_boards(FILE* pfboards, board boards[]){
@@ -54,14 +53,42 @@ void init_game(board boards[]){
     }
 }
 
-bool check_all_row(board boards[], int num_board, int row){
+bool check_all_rows(board boards[]){
     bool winner_row = true;
-    for(int i = 0; i < SIZE_BOARDS; i++){
-        if(boards[num_board].rows[row][i] != -1){
-            winner_row = false;
+    for(int board_num = 0; board_num < NUM_BOARDS; board_num++){
+        for(int row = 0; row < SIZE_BOARDS; row++){
+            winner_row = true;
+            for(int col = 0; col < SIZE_BOARDS; col++){
+                if(boards[board_num].rows[row][col] != -1){
+                    winner_row = false;
+                }
+            }
+            if(winner_row){
+                boards[board_num].winner = true;
+                return winner_row;
+            }
         }
     }
     return winner_row;
+}
+
+bool check_all_cols(board boards[]){
+    bool winner_col = true;
+    for(int board_num = 0; board_num < NUM_BOARDS; board_num++){
+        for(int col = 0; col < SIZE_BOARDS; col++){
+            winner_col = true;
+            for(int row = 0; row < SIZE_BOARDS; row++){
+                if(boards[board_num].rows[row][col] != -1){
+                    winner_col = false;
+                }
+            }
+            if(winner_col){
+                boards[board_num].winner = true;
+                return winner_col;
+            }
+        }
+    }
+    return winner_col;
 }
 
 void play_game(board boards[], ll_int drawn_num[]){
@@ -76,14 +103,15 @@ void play_game(board boards[], ll_int drawn_num[]){
                     if(boards[l].rows[j][k] == num){
                         /* replace by -1 */
                         boards[l].rows[j][k] = -1;
-                        have_winner = check_all_row(boards, l, j);
-                        if(have_winner){
-                            boards[l].winner = have_winner;
-                            boards[l].last_numer = drawn_num[i];
-                            count_unmarkeds(boards[l]);
-                        }
                     }
                 }
+            }
+            have_winner = check_all_rows(boards) || check_all_cols(boards);
+            if(have_winner){
+                boards[l].winner = have_winner;
+                boards[l].last_number = drawn_num[i];
+                count_unmarkeds(boards[l]);
+                break;
             }
         }
         i++;
@@ -117,5 +145,5 @@ void count_unmarkeds(board boards){
             }
         }
     }
-    printf("%lld\n", total * boards.last_numer);
+    printf("%lld\n", total * boards.last_number);
 }

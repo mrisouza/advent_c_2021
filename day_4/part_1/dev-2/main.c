@@ -25,6 +25,7 @@ int main(int argc, char** argv){
 
     get_drawn_numbers(pfnums, drawn_num);
     init_boards(pfboards, boards);
+    //print_boards(boards);
     init_game(boards);
     play_game(boards, drawn_num);
 
