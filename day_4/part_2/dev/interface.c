@@ -27,126 +27,95 @@ void init_boards(FILE* pfboards, board boards[]){
             }
         }
     }
-
-    rewind(pfboards);
-    num_board = 0, r = 0, c = 0;
-
-    while(fscanf(pfboards, "%lld ", &boards[num_board].cols[r][c]) != EOF){
-        if(r == SIZE_BOARDS - 1 && c == SIZE_BOARDS - 1){
-            num_board++;
-            r = 0;
-            c = 0;
-        } else {
-            if(r == SIZE_BOARDS - 1){
-                c++;
-                r = 0;
-            } else {
-                r++;
-            }
-        }
-    }
 }
 
-void init_game(board boards[]){
+void set_winners(board boards[]){
     for(int i = 0; i < NUM_BOARDS; i++){
         boards[i].winner = false;
     }
 }
 
-bool check_board(board boards[], int board_num){
-    bool is_winner = boards[board_num].winner;
-    bool have_winner = true;
-    
-    if(is_winner){
-        return false;
-    } else {
-        for(int r = 0; r < SIZE_BOARDS; r++){
-            for(int c = 0; c < SIZE_BOARDS; c++){
-                if(boards[board_num].rows[r][c] != -1){
-                    have_winner = false;
-                }
-            }
-            if(have_winner){
-                return true;
-            }
+void print_board(board inst_board){
+    for(int r = 0; r < SIZE_BOARDS; r++){
+        for(int c = 0; c < SIZE_BOARDS; c++){
+            printf("%lld ", inst_board.rows[r][c]);
         }
-        for(int r = 0; r < SIZE_BOARDS; r++){
-            for(int c = 0; c < SIZE_BOARDS; c++){
-                if(boards[board_num].cols[r][c] != -1){
-                    have_winner = false;
-                }
-            }
-            if(have_winner){
-                return true;
+        printf("\n");
+    }
+}
+
+void check_if_num_is_in_the_board(board* inst_board, ll_int num){
+    for(int r = 0; r < SIZE_BOARDS; r++){
+        for(int c = 0; c < SIZE_BOARDS; c++){
+            //printf("Comparing %lld == %lld\n", inst_board.rows[r][c], num);
+            if(inst_board->rows[r][c] == num){
+                //printf("Comparing %lld == %lld\n", inst_board->rows[r][c], num);
+                inst_board->rows[r][c] = -1;
             }
         }
     }
-
 }
 
-void play_game(board boards[], ll_int drawn_num[]){
-    bool have_winner;
-    int i = 0;
-
-    while(i < DRAWN_NUMBERS){
-        ll_int num = drawn_num[i];
-        for(int l = 0; l < NUM_BOARDS; l++){
-            for(int j = 0; j < SIZE_BOARDS; j++){
-                for(int k = 0; k < SIZE_BOARDS; k++){
-                    if(boards[l].rows[j][k] == num){
-                        /* replace by -1 */
-                        boards[l].rows[j][k] = -1;
-                    }
-                }
+bool check_if_row_is_filled(board* inst_board){
+    bool is_row_filled;
+    for(int r = 0; r < SIZE_BOARDS; r++){
+        is_row_filled = true;
+        for(int c = 0; c < SIZE_BOARDS; c++){
+            if(inst_board->rows[r][c] != -1){
+                is_row_filled = false;
             }
-            if(check_board(boards, l)){
+        }
+        if(is_row_filled){
+            return true;
+        }
+    }
+    return is_row_filled;
+}
 
+bool check_if_col_is_filled(board* inst_board){
+    bool is_col_filled;
+    for(int c = 0; c < SIZE_BOARDS; c++){
+        is_col_filled = true;
+        for(int r = 0; r < SIZE_BOARDS; r++){
+            if(inst_board->rows[r][c] != -1){
+                is_col_filled = false;
+            }
+        }
+        if(is_col_filled){
+            return true;
+        }
+    }
+    return is_col_filled;
+}
+
+void print_answer(board inst_board, ll_int num){
+    ll_int total = 0;
+    for(int r = 0; r < SIZE_BOARDS; r++){
+        for(int c = 0; c < SIZE_BOARDS; c++){
+            if(inst_board.rows[r][c] != -1){
+                total += inst_board.rows[r][c];
+            }
+        }
+    }
+    printf("%lld\n", total * num);
+}
+
+void init_game(board boards[], ll_int drawn_num[]){
+    int i = 0;
+    while(i < DRAWN_NUMBERS){
+        ll_int num = drawn_num[i]; /* sort a number */
+        for(int b = 0; b < NUM_BOARDS; b++){
+            if(!boards[b].winner){
+                check_if_num_is_in_the_board(&boards[b], num);
+                bool row_is_filled = check_if_row_is_filled(&boards[b]);
+                bool col_is_filled = check_if_col_is_filled(&boards[b]);
+                bool is_row_or_col_filled = row_is_filled || col_is_filled;
+                if(is_row_or_col_filled){
+                    boards[b].winner = true;
+                    print_answer(boards[b], num);
+                }
             }
         }
         i++;
     }
-}
-
-void print_rows(board boards[]){
-    for(int i = 0; i < NUM_BOARDS; i++){
-        printf("Board %d:\n\n", i);
-        for(int r = 0; r < SIZE_BOARDS; r++){
-            printf("Row %d: ", r);
-            for(int c = 0; c < SIZE_BOARDS; c++){
-                printf("%lld ", boards[i].rows[r][c]);
-            }
-            printf("\n");
-        }
-    }
-}
-
-void print_cols(board boards[]){
-    for(int i = 0; i < NUM_BOARDS; i++){
-        printf("Board %d:\n\n", i);
-        for(int c = 0; c < SIZE_BOARDS; c++){
-            printf("Column %d: ", c);
-            for(int r = 0; r < SIZE_BOARDS; r++){
-                printf("%lld ", boards[i].cols[c][r]);
-            }
-            printf("\n");
-        }
-    }
-}
-
-void print_drawn_numbers(ll_int drawn_numbers[]){
-    for(ll_int i = 0; i < DRAWN_NUMBERS; i++){
-        printf("%lld\n", drawn_numbers[i]);
-    }
-}
-
-void count_unmarkeds(board boards){
-    ll_int total = 0;
-    for(int i = 0; i < SIZE_BOARDS; i++){
-        for(int j = 0; j < SIZE_BOARDS; j++){
-            if(boards.rows[i][j] != -1){
-                total += boards.rows[i][j];
-            }
-        }
-    }
-    printf("%lld\n", total * boards.last_number);
 }
