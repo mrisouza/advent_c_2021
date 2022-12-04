@@ -1,3 +1,15 @@
+.PHONY: clean
+
 CC := gcc
 CCFlAGS := -O0 -g -std=c99 -Wall -Wextra -Wshadow -pedantic
-CXXFLAGS := -O0 -g -std=c++11 -Wall -Wextra -Wshadow -pedantic -Weffc++
+LDFLAGS :=
+OBJFILES := lanternfish.o main.o
+TARGET := main
+
+all: $(TARGET)
+
+$(TARGET): $(OBJFILES)
+	$(CC) $(CCFlAGS) -o $(TARGET) $(OBJFILES) $(LDFLAGS)
+
+clean:
+	rm -rf $(TARGET) $(OBJFILES) ~*
