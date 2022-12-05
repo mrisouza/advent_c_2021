@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "lanternfish.h"
 
@@ -21,7 +22,11 @@ int main(int argc, char** argv){
     }
 
     for(int i = 0; i < days; i++){
+        clock_t begin = clock();
         create_offspring(head);
+        clock_t end = clock();
+        double time_spent = (double) (end - begin)/CLOCKS_PER_SEC;
+        printf("Time spent on %d execution: %f\n", i, time_spent);
     }
 
     print_num_lanternfish(head);
