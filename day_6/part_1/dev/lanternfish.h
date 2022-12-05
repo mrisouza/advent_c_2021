@@ -1,7 +1,5 @@
 #pragma once
 
-#define MAX 10
-
 typedef long long unsigned int ll_int;
 
 typedef struct Lanternfish {
@@ -9,4 +7,9 @@ typedef struct Lanternfish {
     struct Lanternfish* next;
 } lanternfish;
 
-void start_lanternfish(lanternfish* l_fish, char* filepath);
+lanternfish* create_lanternfish(void);
+lanternfish* add_lantern_fish(lanternfish* head, int int_timer);
+void create_offspring(lanternfish* head);
+void print_num_lanternfish(lanternfish* head);
+void print_lanternfish(lanternfish* head);
+void free_lantern_fish(lanternfish* head);

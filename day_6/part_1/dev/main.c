@@ -4,14 +4,28 @@
 #include "lanternfish.h"
 
 int main(int argc, char** argv){
-    if(argc != 2){
+    if(argc != 3){
         printf("no input was given...\n");
         exit(1);
     }
     char* filepath = argv[1];
-    lanternfish* l_fish = (lanternfish *) malloc(sizeof(lanternfish));
+    int days = atoi(argv[2]);
 
-    start(l_fish);
+    lanternfish* head = create_lanternfish();
+    
+    FILE* pfile = fopen(filepath, "r");
+    int int_time;
 
+    while(fscanf(pfile, "%d,", &int_time) != EOF){
+        add_lantern_fish(head, int_time);
+    }
+
+    for(int i = 0; i < days; i++){
+        create_offspring(head);
+    }
+
+    print_num_lanternfish(head);
+    free(head);
+    fclose(pfile);
     return EXIT_SUCCESS;
 }
