@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <inttypes.h>
 
 #define NO_INPUT "No input was given...\n"
 
@@ -25,15 +26,15 @@ int main(int argc, char** argv){
 
     while(counter != days){
         l = 0;
-        int s_0 = stages[0];
-        int s_1 = stages[1];
-        int s_2 = stages[2];
-        int s_3 = stages[3];
-        int s_4 = stages[4];
-        int s_5 = stages[5];
-        int s_6 = stages[6];
-        int s_7 = stages[7];
-        int s_8 = stages[8];
+        u_int64_t s_0 = stages[0];
+        u_int64_t s_1 = stages[1];
+        u_int64_t s_2 = stages[2];
+        u_int64_t s_3 = stages[3];
+        u_int64_t s_4 = stages[4];
+        u_int64_t s_5 = stages[5];
+        u_int64_t s_6 = stages[6];
+        u_int64_t s_7 = stages[7];
+        u_int64_t s_8 = stages[8];
 
         stages[0] = s_1;
         stages[1] = s_2;
@@ -50,5 +51,5 @@ int main(int argc, char** argv){
         }
         counter++;
     }
-    printf("%ld\n", l);
+    printf("%" PRIu64 "\n", l);
 }
