@@ -3,7 +3,7 @@
 CC := gcc
 CCFlAGS := -O0 -g -std=c99 -Wall -Wextra -Wshadow -pedantic
 LDFLAGS := 
-OBJ_FILES := main.o 
+OBJ_FILES := file_handler.o input_handler.o main.o 
 TARGET := main
 
 all: $(TARGET)
